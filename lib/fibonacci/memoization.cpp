@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+#define MOD 1000000007
+
 // Fibonacci, with memos, obviously
 // Time Complexity: O(n)
 // Space Complexity: O(n)
