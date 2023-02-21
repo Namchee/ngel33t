@@ -21,11 +21,11 @@ void merge(int arr[], int begin, int mid, int end)
 
     int leftIdx = 0;
     int rightIdx = 0;
-    int cursor = 0;
+    int cursor = begin;
 
     while (leftIdx < lenLeft && rightIdx < lenRight)
     {
-        if (leftArr[leftIdx] < rightArr[rightIdx])
+        if (leftArr[leftIdx] <= rightArr[rightIdx])
         {
             arr[cursor] = leftArr[leftIdx];
             leftIdx++;
@@ -42,15 +42,15 @@ void merge(int arr[], int begin, int mid, int end)
     while (leftIdx < lenLeft)
     {
         arr[cursor] = leftArr[leftIdx];
-        cursor++;
         leftIdx++;
+        cursor++;
     }
 
     while (rightIdx < lenRight)
     {
         arr[cursor] = rightArr[rightIdx];
-        cursor++;
         rightIdx++;
+        cursor++;
     }
 }
 
@@ -73,7 +73,7 @@ int main()
 {
     int arr[5] = {5, 3, 4, 2, 1};
 
-    mergeSort(arr, 0, 5);
+    mergeSort(arr, 0, 4);
 
     for (int idx = 0; idx < 5; idx++)
     {
