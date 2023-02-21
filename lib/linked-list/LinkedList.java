@@ -141,6 +141,30 @@ class LinkedList {
 
         this.head = prev;
     }
+
+    // Does this loop contain cycle?
+    // Time complexity: O(n)
+    public boolean hasCycle() {
+        Node tortoise = this.head;
+        Node hare = this.head.next;
+
+        while (tortoise != null && hare != null) {
+            tortoise = tortoise.next;
+            hare = hare.next;
+
+            if (hare == null) {
+                return false;
+            }
+
+            hare = hare.next;
+
+            if (tortoise == hare) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 class Main {
