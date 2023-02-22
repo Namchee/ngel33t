@@ -3,44 +3,36 @@ using namespace std;
 
 int merge(int arr[], int l, int m, int r)
 {
-    int leftLen = m - l + 1;
-    int rightLen = r - m;
+    int left = l, mid = m, tempCt = 0;
+    int invCount = 0;
+    int temp[(r - left + 1)];
 
-    int leftArr[leftLen];
-    int rightArr[rightLen];
-
-    for (int i = 0; i < leftLen; i++)
+    while ((left < mid) && (mid <= r))
     {
-        leftArr[i] = arr[i + l];
-    }
-    for (int i = 0; i < rightLen; i++)
-    {
-        rightArr[i] = arr[i + m + 1];
-    }
-
-    int leftP = 0, rightP = 0, idxArr = l, invCount = 0;
-
-    while (leftP < leftLen && rightP < rightLen)
-    {
-        if (leftArr[leftP] <= rightArr[rightP])
+        if (arr[left] <= arr[mid])
         {
-            arr[idxArr++] = leftArr[leftP++];
+            temp[tempCt++] = arr[left++];
         }
         else
         {
-            arr[idxArr++] = rightArr[rightP++];
-            invCount += m - leftP;
+            invCount += (mid - left);
+            temp[tempCt++] = arr[mid++];
         }
     }
 
-    while (leftP < leftLen)
+    while (left < mid)
     {
-        arr[idxArr++] = leftArr[leftP++];
+        temp[tempCt++] = arr[left++];
     }
 
-    while (rightP < rightLen)
+    while (mid <= r)
     {
-        arr[idxArr++] = rightArr[rightP++];
+        temp[tempCt++] = arr[mid++];
+    }
+
+    for (int i = l, k = 0; i <= r; i++, k++)
+    {
+        arr[i] = temp[k];
     }
 
     return invCount;
@@ -56,7 +48,7 @@ int mergeSort(int arr[], int l, int r)
     int mid = l + (r - l) / 2;
     int leftInversion = mergeSort(arr, l, mid);
     int rightInversion = mergeSort(arr, mid + 1, r);
-    int mergeInversion = merge(arr, l, mid, r);
+    int mergeInversion = merge(arr, l, mid + 1, r);
 
     return leftInversion + rightInversion + mergeInversion;
 }
