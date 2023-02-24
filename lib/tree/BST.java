@@ -107,4 +107,24 @@ public class BST {
 
         return Math.abs(leftHeight - rightHeight) <= 0 && this.isBalanced(curr.left) && this.isBalanced(curr.right);
     }
+
+    public boolean isBST() {
+        return this.isBST(this.root);
+    }
+
+    private boolean isBST(Node curr) {
+        if (curr == null) {
+            return true;
+        }
+
+        if (curr.left != null && curr.value < curr.left.value) {
+            return false;
+        }
+
+        if (curr.right != null && curr.value >= curr.right.value) {
+            return false;
+        }
+
+        return this.isBST(curr.left) && this.isBST(curr.right);
+    }
 }
