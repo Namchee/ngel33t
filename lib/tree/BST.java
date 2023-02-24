@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 class Node {
     int value;
     Node left, right;
@@ -126,5 +128,48 @@ public class BST {
         }
 
         return this.isBST(curr.left) && this.isBST(curr.right);
+    }
+
+    public int getLCA(int a, int b) {
+        ArrayList<Integer> pathToA = new ArrayList<>();
+        ArrayList<Integer> pathToB = new ArrayList<>();
+
+        boolean hasPathToA = this.findPath(root, pathToA, a);
+        boolean hasPathToB = this.findPath(root, pathToB, b);
+
+        if (!hasPathToA || !hasPathToB) {
+            return -1;
+        }
+
+        for (int idxA = pathToA.size() - 1; idxA >= 0; idxA--) {
+            for (int idxB = pathToB.size() - 1; idxB >= 0; idxB--) {
+                if (pathToA.get(idxA) == pathToB.get(idxB)) {
+                    return pathToA.get(idxA); // this is the LCA
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private boolean findPath(
+            Node curr,
+            ArrayList<Integer> path,
+            int target) {
+        if (curr == null) {
+            return false;
+        }
+
+        path.add(curr.value);
+        if (curr.value == target) {
+            return true;
+        }
+
+        if (this.findPath(curr.left, path, target) || this.findPath(curr.right, path, target)) {
+            return true;
+        }
+
+        path.remove(path.size() - 1); // we don't need to visit this node
+        return false;
     }
 }
