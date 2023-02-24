@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <stack>
+#include <unordered_map>
 using namespace std;
 
 vector<vector<int>> adj;
@@ -8,6 +9,7 @@ vector<bool> visited;
 stack<int> order;
 
 // Topological Sort, not Topologic Gumblar Dragon
+// Can be used to detect cycle too
 //
 // Time complexity: O(V + E)
 // Space complexity: O(V), because of stack storing all vertices
@@ -29,6 +31,32 @@ void dfs(int node)
     }
 
     order.push(node);
+}
+
+// Cycle detection algorithm
+bool has_cycle()
+{
+    unordered_map<int, int> pos;
+    int ord = 0;
+
+    while (!order.empty())
+    {
+        pos[order.top()] = ord++;
+        order.pop();
+    }
+
+    for (int idx = 0; idx < (int)adj.size(); idx++)
+    {
+        for (int j = 0; j < adj[idx].size(); j++)
+        {
+            if (pos[adj[idx][j]] < pos[idx])
+            {
+                return true; // if the parent doesn't appear first, there's a cycle
+            }
+        }
+    }
+
+    return false;
 }
 
 int main()
