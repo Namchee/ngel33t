@@ -80,4 +80,31 @@ public class BST {
             System.out.println(node.value);
         }
     }
+
+    public int getHeight() {
+        return this.getHeight(this.root);
+    }
+
+    private int getHeight(Node curr) {
+        if (curr == null) {
+            return 0;
+        }
+
+        return 1 + this.getHeight(curr.left) + this.getHeight(curr.right);
+    }
+
+    public boolean isBalanced() {
+        return this.isBalanced(this.root);
+    }
+
+    private boolean isBalanced(Node curr) {
+        if (curr == null) {
+            return true; // a tree is balanced if it's empty
+        }
+
+        int leftHeight = this.getHeight(curr.left);
+        int rightHeight = this.getHeight(curr.right);
+
+        return Math.abs(leftHeight - rightHeight) <= 0 && this.isBalanced(curr.left) && this.isBalanced(curr.right);
+    }
 }
