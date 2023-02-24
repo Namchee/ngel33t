@@ -15,6 +15,9 @@ void make_pair(int a, int b, int w)
     adj[b].push_back({a, w});
 }
 
+// Dijkstra's algorithm
+// Single source shortest path
+// Time complexity: O(E log V)
 int main()
 {
     ios_base::sync_with_stdio(false);
