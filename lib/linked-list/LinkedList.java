@@ -4,170 +4,170 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-class Node {
-    int value;
-    Node next;
+class Main {
+    static class Node {
+        public int value;
+        public Node next;
 
-    public Node(int value) {
-        this.value = value;
-        this.next = null;
-    }
-}
-
-class LinkedList {
-    Node head;
-
-    public LinkedList() {
-        this.head = null;
+        public Node(int value) {
+            this.value = value;
+            this.next = null;
+        }
     }
 
-    public LinkedList(int value) {
-        this.head = new Node(value);
-    }
+    static class LinkedList {
+        Node head;
 
-    public void append(int value) {
-        Node newNode = new Node(value);
-        if (this.head == null) {
-            this.head = newNode;
-            return;
+        public LinkedList() {
+            this.head = null;
         }
 
-        Node curr = this.head;
-        while (curr.next != null) {
-            curr = curr.next;
+        public LinkedList(int value) {
+            this.head = new Node(value);
         }
 
-        curr.next = newNode;
-    }
+        public void append(int value) {
+            Node newNode = new Node(value);
+            if (this.head == null) {
+                this.head = newNode;
+                return;
+            }
 
-    public String members() {
-        ArrayList<String> mem = new ArrayList<>();
-        Node curr = this.head;
-        while (curr != null) {
-            mem.add(Integer.toString(curr.value, 10));
-            curr = curr.next;
+            Node curr = this.head;
+            while (curr.next != null) {
+                curr = curr.next;
+            }
+
+            curr.next = newNode;
         }
 
-        return String.join("->", mem);
-    }
+        public String members() {
+            ArrayList<String> mem = new ArrayList<>();
+            Node curr = this.head;
+            while (curr != null) {
+                mem.add(Integer.toString(curr.value, 10));
+                curr = curr.next;
+            }
 
-    public int length() {
-        int len = 0;
-        Node curr = this.head;
-        while (curr != null) {
-            len++;
-            curr = curr.next;
+            return String.join("->", mem);
         }
 
-        return len;
-    }
+        public int length() {
+            int len = 0;
+            Node curr = this.head;
+            while (curr != null) {
+                len++;
+                curr = curr.next;
+            }
 
-    // Remove duplicate
-    // Time complexity: O(n^2)
-    public void removeDuplicates() {
-        Node curr = this.head;
+            return len;
+        }
 
-        while (curr != null) {
-            Node cursor = curr;
+        // Remove duplicate
+        // Time complexity: O(n^2)
+        public void removeDuplicates() {
+            Node curr = this.head;
 
-            while (cursor.next != null) {
-                if (curr.value == cursor.next.value) {
-                    cursor.next = cursor.next.next;
+            while (curr != null) {
+                Node cursor = curr;
+
+                while (cursor.next != null) {
+                    if (curr.value == cursor.next.value) {
+                        cursor.next = cursor.next.next;
+                    } else {
+                        cursor = cursor.next;
+                    }
+                }
+
+                curr = curr.next;
+            }
+        }
+
+        // With hashing
+        // Time complexity: O(n)
+        // Space complexity: O(n)
+        public void removeDuplicatesWithSet() {
+            Node curr = this.head;
+            Node cursor = this.head;
+            HashSet<Integer> set = new HashSet<>();
+
+            while (curr != null) {
+                if (set.contains(curr.value)) {
+                    cursor.next = curr.next;
                 } else {
-                    cursor = cursor.next;
+                    set.add(curr.value);
+                    cursor = curr;
+                }
+
+                curr = curr.next;
+            }
+        }
+
+        // Delete a given key
+        // Time complexity: O(n)
+        public void deleteKey(int value) {
+            // set the head correctly
+            while (this.head.value == value) {
+                this.head = this.head.next;
+            }
+
+            Node curr = this.head;
+            Node prev = null;
+
+            while (curr != null) {
+                if (curr.value == value) {
+                    prev.next = curr.next;
+                } else {
+                    prev = curr;
+                }
+
+                curr = curr.next;
+            }
+        }
+
+        // Reverse the linked list
+        // Time complexity: O(n)
+        public void reverse() {
+            Node curr = this.head;
+            Node prev = null;
+            Node next = null;
+
+            while (curr != null) {
+                next = curr.next;
+                curr.next = prev;
+
+                prev = curr;
+                curr = next;
+            }
+
+            this.head = prev;
+        }
+
+        // Does this loop contain cycle?
+        // Time complexity: O(n)
+        public boolean hasCycle() {
+            Node tortoise = this.head;
+            Node hare = this.head.next;
+
+            while (tortoise != null && hare != null) {
+                tortoise = tortoise.next;
+                hare = hare.next;
+
+                if (hare == null) {
+                    return false;
+                }
+
+                hare = hare.next;
+
+                if (tortoise == hare) {
+                    return true;
                 }
             }
 
-            curr = curr.next;
+            return false;
         }
     }
 
-    // With hashing
-    // Time complexity: O(n)
-    // Space complexity: O(n)
-    public void removeDuplicatesWithSet() {
-        Node curr = this.head;
-        Node cursor = this.head;
-        HashSet<Integer> set = new HashSet<>();
-
-        while (curr != null) {
-            if (set.contains(curr.value)) {
-                cursor.next = curr.next;
-            } else {
-                set.add(curr.value);
-                cursor = curr;
-            }
-
-            curr = curr.next;
-        }
-    }
-
-    // Delete a given key
-    // Time complexity: O(n)
-    public void deleteKey(int value) {
-        // set the head correctly
-        while (this.head.value == value) {
-            this.head = this.head.next;
-        }
-
-        Node curr = this.head;
-        Node prev = null;
-
-        while (curr != null) {
-            if (curr.value == value) {
-                prev.next = curr.next;
-            } else {
-                prev = curr;
-            }
-
-            curr = curr.next;
-        }
-    }
-
-    // Reverse the linked list
-    // Time complexity: O(n)
-    public void reverse() {
-        Node curr = this.head;
-        Node prev = null;
-        Node next = null;
-
-        while (curr != null) {
-            next = curr.next;
-            curr.next = prev;
-
-            prev = curr;
-            curr = next;
-        }
-
-        this.head = prev;
-    }
-
-    // Does this loop contain cycle?
-    // Time complexity: O(n)
-    public boolean hasCycle() {
-        Node tortoise = this.head;
-        Node hare = this.head.next;
-
-        while (tortoise != null && hare != null) {
-            tortoise = tortoise.next;
-            hare = hare.next;
-
-            if (hare == null) {
-                return false;
-            }
-
-            hare = hare.next;
-
-            if (tortoise == hare) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-class Main {
     public static void main(String[] args) throws IOException {
         String in;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -186,7 +186,7 @@ class Main {
         System.out.println(li.members());
         System.out.println(li.length());
 
-        li.reverse();
+        li.removeDuplicates();
 
         System.out.println(li.members());
     }
