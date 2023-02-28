@@ -92,7 +92,7 @@ public class BST {
             return 0;
         }
 
-        return 1 + this.getHeight(curr.left) + this.getHeight(curr.right);
+        return 1 + Math.max(this.getHeight(curr.left), this.getHeight(curr.right));
     }
 
     public boolean isBalanced() {
