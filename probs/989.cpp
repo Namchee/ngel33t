@@ -1,4 +1,5 @@
 #include <cmath>
+#include <vector>
 using namespace std;
 
 vector<int> addToArrayForm(vector<int> &num, int k)
