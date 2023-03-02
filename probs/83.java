@@ -23,7 +23,7 @@ class Solution {
             ListNode cursor = curr;
 
             while (cursor.next != null) {
-                if (curr.val == cursor.val) {
+                if (curr.val == cursor.next.val) {
                     cursor.next = cursor.next.next;
                 } else {
                     cursor = cursor.next;
