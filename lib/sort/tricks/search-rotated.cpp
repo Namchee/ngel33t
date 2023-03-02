@@ -56,7 +56,7 @@ int binary_search(vector<int> &arr, int key, int lo, int hi)
 
 int main()
 {
-    vector<int> arr = {7, 8, 9, 1, 2, 3, 4, 6};
+    vector<int> arr = {3, 1};
     int pivot = find_pivot(arr);
 
     int key;
@@ -69,7 +69,12 @@ int main()
     }
     else
     {
-        if (key >= arr[pivot])
+        if (key == arr[pivot])
+        {
+            return pivot;
+        }
+
+        if (arr[0] <= key)
         {
             cout << binary_search(arr, key, 0, pivot - 1) << "\n";
         }
