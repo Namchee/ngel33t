@@ -1,5 +1,6 @@
 // Trie
 // Or known as prefix tree
+// Real world example: autocomplete
 public class Trie {
     static final int ALPHABET_SIZE = 26;
 
