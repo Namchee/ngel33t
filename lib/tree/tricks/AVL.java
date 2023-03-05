@@ -3,10 +3,10 @@ package tricks;
 import java.util.ArrayList;
 import java.util.List;
 
-// Balancing a binary search tree, using 
+// AVL, self balancing binary tree
 // Time complexity: O(n), first in-order traversal, and building the tree afterwards
 // Space complexity: O(n), used to store the node values
-class Balans {
+class AVL {
     static class Node {
         int value;
         Node left, right;
@@ -20,7 +20,7 @@ class Balans {
 
     Node root;
 
-    public Balans() {
+    public AVL() {
         this.root = null;
     }
 
