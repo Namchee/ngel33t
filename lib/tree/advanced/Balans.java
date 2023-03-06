@@ -1,4 +1,4 @@
-package tricks;
+package advanced;
 
 import java.util.ArrayList;
 import java.util.List;
