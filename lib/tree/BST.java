@@ -95,27 +95,27 @@ public class BST {
         return 1 + Math.max(this.getHeight(curr.left), this.getHeight(curr.right));
     }
 
-    public boolean isBalanced() {
+    public int isBalanced() {
         return this.isBalanced(this.root);
     }
 
-    private boolean isBalanced(Node curr) {
+    private int isBalanced(Node curr) {
         if (curr == null) {
-            return true; // a tree is balanced if it's empty
+            return 0; // a tree is balanced if it's empty
         }
 
         int leftHeight = this.getHeight(curr.left);
         if (leftHeight == -1) {
-            return false;
+            return -1;
         }
 
         int rightHeight = this.getHeight(curr.right);
         if (rightHeight == -1) {
-            return false;
+            return -1;
         }
 
         if (Math.abs(leftHeight - rightHeight) > 1) {
-            return false;
+            return -1;
         } else {
             return Math.max(leftHeight, rightHeight) + 1;
         }
