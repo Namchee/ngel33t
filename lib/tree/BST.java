@@ -105,9 +105,20 @@ public class BST {
         }
 
         int leftHeight = this.getHeight(curr.left);
-        int rightHeight = this.getHeight(curr.right);
+        if (leftHeight == -1) {
+            return false;
+        }
 
-        return Math.abs(leftHeight - rightHeight) <= 0 && this.isBalanced(curr.left) && this.isBalanced(curr.right);
+        int rightHeight = this.getHeight(curr.right);
+        if (rightHeight == -1) {
+            return false;
+        }
+
+        if (Math.abs(leftHeight - rightHeight) > 1) {
+            return false;
+        } else {
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
     }
 
     public boolean isBST() {
