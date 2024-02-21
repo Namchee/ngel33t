@@ -1,25 +1,29 @@
 #include <vector>;
-#include <algorithm>;
+#include <limits>;
 using namespace std;
-
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {
-        int result = nums[0];
+        int result = -999999999;
+
+        int acc = 1;
 
         for (int i = 0; i < nums.size(); i++) {
-            int curr = nums[i];
-            result = max(result, curr);
+            acc *= nums[i];
+            result = max(result, acc);
+            if (acc == 0) {
+                acc = 1;
+            }
+        }
 
-            for (int j = i - 1; j >= 0; j--) {
-                if (nums[j] == 0) {
-                    break;
-                }
+        acc = 1;
 
-                curr *= nums[j];
-
-                result = max(result, curr);
-            }  
+        for (int i = nums.size() - 1; i >= 0; i--) {
+            acc *= nums[i];
+            result = max(result, acc);
+            if (acc == 0) {
+                acc = 1;
+            }
         }
 
         return result;
