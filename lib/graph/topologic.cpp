@@ -1,62 +1,65 @@
 #include <vector>
 #include <iostream>
-#include <stack>
+#include <queue>
 #include <unordered_map>
 using namespace std;
 
 vector<vector<int>> adj;
 vector<bool> visited;
-stack<int> order;
 
-// Topological Sort, not Topologic Gumblar Dragon
+// Topological Sort
 // Can be used to detect cycle too
 //
 // Time complexity: O(V + E)
 // Space complexity: O(V), because of stack storing all vertices
 
-void dfs(int node)
+// Cycle detection algorithm
+vector<int> has_cycle()
 {
-    if (visited[node])
-    {
-        return;
-    }
+    vector<int> in_degree(adj.size(), 0);
 
-    visited[node] = true;
-    for (int idx = 0; idx < adj[node].size(); idx++)
+    for (int i = 0; i < adj.size(); i++)
     {
-        if (!visited[adj[node][idx]])
+        for (auto to : adj[i])
         {
-            dfs(adj[node][idx]);
+            in_degree[to]++;
         }
     }
 
-    order.push(node);
-}
-
-// Cycle detection algorithm
-bool has_cycle()
-{
-    unordered_map<int, int> pos;
-    int ord = 0;
-
-    while (!order.empty())
+    queue<int> q;
+    for (int i = 0; i < adj.size(); i++)
     {
-        pos[order.top()] = ord++;
-        order.pop();
+        if (in_degree[i] == 0)
+        {
+            q.push(i);
+        }
     }
 
-    for (int idx = 0; idx < (int)adj.size(); idx++)
+    vector<int> order;
+    int count = 0;
+
+    while (!q.empty())
     {
-        for (int j = 0; j < adj[idx].size(); j++)
+        int u = q.front();
+        q.pop();
+        order.push_back(u);
+
+        for (int to : adj[u])
         {
-            if (pos[adj[idx][j]] < pos[idx])
+            if (--in_degree[to] == 0)
             {
-                return true; // if the parent doesn't appear first, there's a cycle
+                q.push(to);
             }
         }
+
+        count++;
     }
 
-    return false;
+    if (count != adj.size()) {
+        cout << "Cycle exist!" << endl;
+    }
+
+    return order;
 }
 
 int main()
@@ -82,13 +85,5 @@ int main()
         }
 
         adj[a].push_back(b);
-    }
-
-    dfs(source);
-
-    while (!order.empty())
-    {
-        cout << order.top() << " ";
-        order.pop();
     }
 }
