@@ -4,16 +4,10 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
-        if (intervals.size() == 0) {
-            return { newInterval };
-        }
-
-        intervals.push_back(newInterval);
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
         sort(intervals.begin(), intervals.end());
-
+        
         vector<vector<int> > result;
-
         int start = intervals[0][0];
         int end = intervals[0][1];
 
@@ -21,7 +15,6 @@ public:
             int a = intervals[i][0];
             int b = intervals[i][1];
 
-            // this new interval is smaller, or same
             if (a >= start && a <= end && b >= start && b <= end) {
                 continue;
             }
