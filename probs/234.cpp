@@ -19,7 +19,7 @@ public:
         {
             tortoise = tortoise->next;
             hare = hare->next->next;
-        }
+        }   
 
         ListNode *reversed = reverse(tortoise);
         while (reversed != nullptr)
