@@ -1,23 +1,25 @@
+#include <vector>
+using namespace std;
+
 class Solution {
 public:
     int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        int start = 0;
+        int end = 0;
         int result = 0;
+        int curr = 1;
 
-        for (int i = 0; i < nums.size(); i++) {
-            int acc = nums[i];
-            if (acc < k) {
-                result++;
-            }
-
-            for (int j = i + 1; j < nums.size() && acc < k; j++) {
-                acc *= nums[j];
-
-                if (acc < k) {
-                    result++;
-                }
-            }
+        if (k <= 1) {
+            return 0;
         }
-        
+
+        while (end < nums.size()) {
+            curr *= nums[end];
+            while (curr >= k) curr /= nums[start++];
+            result += 1 + (end - start);
+            end++;
+        }
+
         return result;
     }
 };
