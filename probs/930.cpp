@@ -1,32 +1,31 @@
-#include <vector>;
+#include <vector>
 using namespace std;
 
 class Solution {
 public:
     int numSubarraysWithSum(vector<int>& nums, int goal) {
+        return atMostGoal(nums, goal) - atMostGoal(nums, goal - 1);
+    }
+
+private:
+    int atMostGoal(vector<int>& nums, int goal) {
+        int result = 0;
+
         int n = nums.size();
-        int res = 0;
+        int curr = 0;
+        int start = 0;
+        int end = 0;
 
-        for (int i = 0; i < n; i++) {
-            if (i) {
-                nums[i] += nums[i - 1]; 
+        while (end < n) {
+            curr += nums[end];
+            while (curr > goal && start <= end) {
+                curr -= nums[start++];
             }
 
-            if (nums[i] == goal) {
-                res++;
-            }
+            result += end - start + 1;
+            end++;
         }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < i; j++) {
-                int sum = nums[i] - nums[j];
-
-                if (sum == goal) {
-                    res++;
-                }
-            }
-        }
-
-        return res;
+        return result;
     }
 };
