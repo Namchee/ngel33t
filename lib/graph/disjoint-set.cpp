@@ -1,4 +1,6 @@
-int parent[10000], rank[10000] = 0;
+#include <algorithm>
+
+int parent[10000], rank[10000];
 
 // Disjoint Set - can be used t o check if x is connected to y
 // or counting number of connected components
@@ -22,7 +24,7 @@ void union_sets(int a, int b) {
     b = find_set(b);
     if (a != b) {
         if (rank[b] < rank[a]) {
-            swap(a, b);
+            std::swap(a, b);
         }
 
         parent[b] = a;
