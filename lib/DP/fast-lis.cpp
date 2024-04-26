@@ -6,6 +6,9 @@
  * 
  * Detailed reading: https://cp-algorithms.com/sequences/longest_increasing_subsequence.html#solution-in-on-log-n-with-dynamic-programming-and-binary-search
 */
+#include <vector>
+#include <algorithm>
+using namespace std;
 
 int lis(const vector<int>& input) {
     int n = input.size();
@@ -14,7 +17,7 @@ int lis(const vector<int>& input) {
     dp[0] = -INF;
 
     for (int i = 0; i < n; i++) {
-        int l = upper_bound(dp.begin(), dp.end(), input[i]) - dp.begin();
+        int l = std::upper_bound(dp.begin(), dp.end(), input[i]) - dp.begin();
 
         if (dp[l - 1] < input[i] && input[i] < dp[l]) {
             dp[l] = input[i];
