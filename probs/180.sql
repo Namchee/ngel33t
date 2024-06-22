@@ -1,7 +1,6 @@
-SELECT
-    c.name as Customers
+SELECT  
+    DISTINCT(a.num) AS ConsecutiveNums
 FROM
-    customers c LEFT JOIN
-    orders o ON c.id = o.customerId
+    logs a, logs b, logs c
 WHERE
-    o.id IS NULL;
+    a.id + 1 = b.id AND b.id + 1 = c.id AND a.id + 2 = c.id AND a.num = b.num AND a.num = c.num;
