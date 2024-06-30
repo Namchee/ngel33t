@@ -8,9 +8,10 @@ public:
         int start = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
         int end = lower_bound(nums.begin(), nums.end(), target + 1) - nums.begin() - 1;
 
-        if (start < nums.size() && nums[start] == target){
+        if (start < nums.size() && nums[start] == target) {
             return {start, end};
         }
-        return {-1, -1};
+
+        return { -1, -1 };
     }
 };
