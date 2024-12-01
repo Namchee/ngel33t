@@ -34,8 +34,8 @@ fn main() -> Result<()> {
             arr2.push(nums[1]);
         }
 
-        arr1.sort();
-        arr2.sort();
+        arr1.sort_unstable();
+        arr2.sort_unstable();
 
         let mut diff = 0;
         for i in 0..arr1.len() {
