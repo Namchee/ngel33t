@@ -26,3 +26,5 @@ output
 
 .vscode
 a.out
+
+node_modules
