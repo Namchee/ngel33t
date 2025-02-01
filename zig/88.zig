@@ -20,6 +20,7 @@ fn solution(nums1: []i32, m: usize, nums2: []i32, n: usize) void {
     }
 }
 
+const isEqual = @import("./utils.zig").isEqual;
 const expect = std.testing.expect;
 
 test "test case #1" {
@@ -30,13 +31,9 @@ test "test case #1" {
     const n = 3;
 
     solution(&num1, m, &num2, n);
+    var expected = [_]i32{ 1, 2, 2, 3, 5, 6 };
 
-    try expect(num1[0] == 1);
-    try expect(num1[1] == 2);
-    try expect(num1[2] == 2);
-    try expect(num1[3] == 3);
-    try expect(num1[4] == 5);
-    try expect(num1[5] == 6);
+    try expect(isEqual(i32, &num1, &expected));
 }
 
 test "test case #2" {

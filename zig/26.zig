@@ -14,31 +14,34 @@ fn solution(nums: []i32) usize {
         }
     }
 
+    var runner = lastIdx;
+
+    while (runner < nums.len) : (runner += 1) {
+        nums[runner] = -1;
+    }
+
     return lastIdx;
 }
 
+const isEqual = @import("./utils.zig").isEqual;
 const expect = std.testing.expect;
 
 test "test case #1" {
-    var nums = [3]i32{ 1, 1, 2 };
+    var nums = [_]i32{ 1, 1, 2 };
 
     const uniq = solution(&nums);
+    var expected = [_]i32{ 1, 2, -1 };
 
-    try expect(nums[0] == 1);
-    try expect(nums[1] == 2);
+    try expect(isEqual(i32, &nums, &expected));
     try expect(uniq == 2);
 }
 
 test "test case #2" {
-    var nums = [10]i32{ 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 };
+    var nums = [_]i32{ 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 };
 
     const uniq = solution(&nums);
+    var expected = [_]i32{ 0, 1, 2, 3, 4, -1, -1, -1, -1, -1 };
 
-    try expect(nums[0] == 0);
-    try expect(nums[1] == 1);
-    try expect(nums[2] == 2);
-    try expect(nums[3] == 3);
-    try expect(nums[4] == 4);
-
+    try expect(isEqual(i32, &nums, &expected));
     try expect(uniq == 5);
 }
