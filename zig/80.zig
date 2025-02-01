@@ -11,37 +11,55 @@ fn solution(nums: []i32, limit: usize) usize {
     for (nums[1..]) |el| {
         if (el != nums[lastIdx - 1] or count < limit) {
             nums[lastIdx] = el;
-            lastIdx += 1;
 
             if (el == nums[lastIdx - 1]) {
                 count += 1;
             } else {
                 count = 1;
             }
+
+            lastIdx += 1;
         }
+    }
+
+    var runner = lastIdx;
+    while (runner < nums.len) : (runner += 1) {
+        nums[runner] = -1;
     }
 
     return lastIdx;
 }
 
+const isEqual = @import("./utils.zig").isEqual;
 const expect = std.testing.expect;
 
 test "test case #1" {
-    var nums = [6]i32{ 1, 1, 1, 2, 2, 3 };
+    var nums = [_]i32{ 1, 1, 1, 2, 2, 3 };
 
     const uniq = solution(&nums, 2);
+    var expected = [_]i32{ 1, 1, 2, 2, 3, -1 };
 
-    for (nums) |arr| {
-        std.debug.print("{} ", .{arr});
-    }
-    std.debug.print("\n", .{});
-
-    try expect(nums[0] == 1);
-    try expect(nums[1] == 1);
-    try expect(nums[2] == 2);
-    try expect(nums[3] == 2);
-    try expect(nums[4] == 3);
+    try expect(isEqual(i32, &nums, &expected));
     try expect(uniq == 5);
 }
 
-test "test case #2" {}
+test "test case #2" {
+    var nums = [_]i32{ 0, 0, 1, 1, 1, 1, 2, 3, 3 };
+
+    const uniq = solution(&nums, 2);
+    var expected = [_]i32{ 0, 0, 1, 1, 2, 3, 3, -1, -1 };
+
+    try expect(isEqual(i32, &nums, &expected));
+    try expect(uniq == 7);
+}
+
+// Not available in leetcode, I just want to test whether it works for maximum X number or not
+test "test case #3" {
+    var nums = [_]i32{ 1, 1, 1, 1, 2, 2, 3 };
+
+    const uniq = solution(&nums, 3);
+    var expected = [_]i32{ 1, 1, 1, 2, 2, 3, -1 };
+
+    try expect(isEqual(i32, &nums, &expected));
+    try expect(uniq == 6);
+}

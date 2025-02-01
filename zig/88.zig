@@ -24,8 +24,8 @@ const isEqual = @import("./utils.zig").isEqual;
 const expect = std.testing.expect;
 
 test "test case #1" {
-    var num1 = [6]i32{ 1, 2, 3, 0, 0, 0 };
-    var num2 = [3]i32{ 2, 5, 6 };
+    var num1 = [_]i32{ 1, 2, 3, 0, 0, 0 };
+    var num2 = [_]i32{ 2, 5, 6 };
 
     const m = 3;
     const n = 3;
@@ -37,8 +37,8 @@ test "test case #1" {
 }
 
 test "test case #2" {
-    var num1 = [1]i32{1};
-    var num2 = [0]i32{};
+    var num1 = [_]i32{1};
+    var num2 = [_]i32{};
 
     const m = 1;
     const n = 0;
@@ -49,8 +49,8 @@ test "test case #2" {
 }
 
 test "test case #3" {
-    var num1 = [1]i32{0};
-    var num2 = [1]i32{1};
+    var num1 = [_]i32{0};
+    var num2 = [_]i32{1};
 
     const m = 0;
     const n = 1;
