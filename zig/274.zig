@@ -24,6 +24,37 @@ fn solution(nums: []i32) i32 {
     return lo + @divFloor(hi - lo, 2);
 }
 
+fn solution_alt(nums: []i32) !i32 {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+
+    var arr = std.ArrayList(i32).init(allocator);
+    defer arr.deinit();
+
+    const papers = nums.len;
+
+    try arr.resize(papers + 1);
+    for (0..papers + 1) |idx| {
+        arr.items[idx] = 0;
+    }
+
+    for (nums) |el| {
+        arr.items[@min(@as(usize, @intCast(el)), papers)] += 1;
+    }
+
+    var cumulative: i32 = 0;
+    var idx = papers;
+
+    while (idx >= 0) : (idx -= 1) {
+        cumulative += arr.items[idx];
+        if (cumulative >= idx) {
+            return @intCast(idx);
+        }
+    }
+
+    return 0;
+}
+
 const expect = std.testing.expect;
 
 test "test case #1" {
