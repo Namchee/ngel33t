@@ -18,7 +18,9 @@ fn solution(dict: []const u8, t: []const u8) []const u8 {
         target[ch - 'A'] += 1;
     }
 
-    var mini: []const u8 = "";
+    var bl: usize = 0;
+    var br: usize = dict.len + 1;
+
     var current = [_]i32{0} ** 26;
 
     var left: usize = 0;
@@ -30,9 +32,11 @@ fn solution(dict: []const u8, t: []const u8) []const u8 {
 
         while (sub_slice(&current, &target)) {
             const len = right - left + 1;
+            const bestLen = br - bl + 1;
 
-            if (mini.len == 0 or mini.len > len) {
-                mini = dict[left..right];
+            if (bestLen == dict.len + 2 or bestLen > len) {
+                bl = left;
+                br = right;
             }
 
             current[dict[left] - 'A'] -= 1;
@@ -40,7 +44,13 @@ fn solution(dict: []const u8, t: []const u8) []const u8 {
         }
     }
 
-    return mini;
+    const bestLen = br - bl + 1;
+
+    if (bestLen == dict.len + 2) {
+        return "";
+    }
+
+    return dict[bl..br];
 }
 
 const expect = std.testing.expect;
