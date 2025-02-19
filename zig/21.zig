@@ -1,32 +1,94 @@
 const std = @import("std");
 
-fn create_node(comptime T: type) type {
-    const Node = struct {
-        const Self = @This();
+const Node = struct {
+    val: i32,
+    next: ?*Node,
 
-        val: T,
-        next: ?*Self,
+    pub fn init(alloc: std.mem.Allocator, val: i32) !*Node {
+        const node = try alloc.create(Node);
+        node.val = val;
+        node.next = null;
 
-        pub fn init(alloc: std.mem.Allocator, val: T) !*Self {
-            var new_node = try alloc.create(Self);
-            new_node.val = val;
-            new_node.next = null;
+        return node;
+    }
+};
 
-            return new_node;
+fn solution(alloc: std.mem.Allocator, a: ?*Node, b: ?*Node) !?*Node {
+    var runner_a: ?*Node = a;
+    var runner_b: ?*Node = b;
+
+    const head: ?*Node = try Node.init(alloc, -1);
+    var tail: ?*Node = head;
+
+    while (runner_a != null or runner_b != null) {
+        if (runner_b == null) {
+            tail.?.next = runner_a;
+            break;
         }
-    };
 
-    return Node;
+        if (runner_a == null) {
+            tail.?.next = runner_b;
+            break;
+        }
+
+        if (runner_a.?.val <= runner_b.?.val) {
+            const next = runner_a.?.next;
+            tail.?.next = runner_a;
+            runner_a = next;
+        } else {
+            const next = runner_b.?.next;
+            tail.?.next = runner_b;
+            runner_b = next;
+        }
+
+        tail = tail.?.next;
+    }
+
+    const result = head.?.next;
+    if (head) |node| {
+        alloc.destroy(node);
+    }
+    return result;
 }
 
 const expect = std.testing.expect;
 
 test "test case #1" {
-    const Node = create_node(i32);
     const alloc = std.testing.allocator;
 
-    const a = try Node.init(alloc, 9);
-    defer alloc.destroy(a);
+    var a = try Node.init(alloc, 1);
+    var b = try Node.init(alloc, 2);
+    const c = try Node.init(alloc, 4);
+    var d = try Node.init(alloc, 1);
+    var e = try Node.init(alloc, 3);
+    const f = try Node.init(alloc, 4);
+
+    a.next = b;
+    b.next = c;
+
+    d.next = e;
+    e.next = f;
+
+    var sol = try solution(alloc, a, d);
+    const original_sol = sol;
+
+    defer {
+        var current = original_sol;
+
+        while (current) |node| {
+            const next = node.next;
+            alloc.destroy(node);
+            current = next;
+        }
+    }
+
+    const expected: [6]i32 = .{ 1, 1, 2, 3, 4, 4 };
+    var i: usize = 0;
+    while (sol) |node| {
+        try expect(node.val == expected[i]);
+        i += 1;
+        sol = node.next;
+    }
 }
 
 test "test case #2" {}
