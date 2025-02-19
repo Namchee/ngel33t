@@ -70,15 +70,13 @@ test "test case #1" {
     e.next = f;
 
     var sol = try solution(alloc, a, d);
-    const original_sol = sol;
+    var orig = sol;
 
     defer {
-        var current = original_sol;
-
-        while (current) |node| {
+        while (orig) |node| {
             const next = node.next;
             alloc.destroy(node);
-            current = next;
+            orig = next;
         }
     }
 
@@ -91,6 +89,27 @@ test "test case #1" {
     }
 }
 
-test "test case #2" {}
+test "test case #2" {
+    const alloc = std.testing.allocator;
 
-test "test case #3" {}
+    const a = try Node.init(alloc, 0);
+
+    var sol = try solution(alloc, a, null);
+    var orig = sol;
+
+    defer {
+        while (orig) |node| {
+            const next = node.next;
+            alloc.destroy(node);
+            orig = next;
+        }
+    }
+
+    const expected: [1]i32 = .{0};
+    var i: usize = 0;
+    while (sol) |node| {
+        try expect(node.val == expected[i]);
+        i += 1;
+        sol = node.next;
+    }
+}
