@@ -2,8 +2,8 @@ const std = @import("std");
 
 const TreeNode = struct {
     val: i32,
-    left: ?*TreeNode = null,
-    right: ?*TreeNode = null,
+    left: ?*TreeNode,
+    right: ?*TreeNode,
 
     pub fn init(alloc: std.mem.Allocator, val: i32) !*TreeNode {
         const node = try alloc.create(TreeNode);
