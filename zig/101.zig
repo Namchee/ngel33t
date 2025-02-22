@@ -8,8 +8,6 @@ const TreeNode = struct {
     pub fn init(alloc: std.mem.Allocator, val: i32) !*TreeNode {
         const node = try alloc.create(TreeNode);
         node.val = val;
-        node.left = null;
-        node.right = null;
 
         return node;
     }
