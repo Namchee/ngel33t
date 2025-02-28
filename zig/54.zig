@@ -1,13 +1,13 @@
 const std = @import("std");
 
-fn solution(comptime M: usize, comptime N: usize, alloc: std.mem.Allocator, matrix: *[M][N]i32) ![]i32 {
-    const it = [_][2]i32{
-        .{ 0, 1 },
-        .{ 1, 0 },
-        .{ 0, -1 },
-        .{ -1, 0 },
-    };
+const it = [_][2]i32{
+    .{ 0, 1 },
+    .{ 1, 0 },
+    .{ 0, -1 },
+    .{ -1, 0 },
+};
 
+fn solution(comptime M: usize, comptime N: usize, alloc: std.mem.Allocator, matrix: *[M][N]i32) ![]i32 {
     var inc: usize = 0;
 
     var i: usize = 0;
