@@ -8,6 +8,7 @@ func reverseBits(n int) int {
 		return hit
 	}
 
+	temp := n
 	result := 0
 
 	for _ = range 32 {
@@ -17,7 +18,7 @@ func reverseBits(n int) int {
 		n >>= 1
 	}
 
-	cache[n] = result
+	cache[temp] = result
 
 	return result
 }
