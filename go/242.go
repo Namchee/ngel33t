@@ -1,6 +1,10 @@
 package main
 
 func isAnagram(s string, t string) bool {
+	if len(s) != len(t) {
+		return false
+	}
+
 	// rune is used to handle unicode
 	mp := map[rune]int{}
 
