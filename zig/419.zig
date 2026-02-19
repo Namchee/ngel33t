@@ -1,33 +1,14 @@
 const std = @import("std");
 
-fn traverse(r: usize, c: usize, board: [][]u8) void {
-    if (r < 0 or c < 0 or r >= board.len or c >= board[r].len or board[r][c] == '.') {
-        return;
-    }
-
-    board[r][c] = '.';
-
-    if (r > 0) {
-        traverse(r - 1, c, board);
-    }
-
-    traverse(r + 1, c, board);
-
-    if (c > 0) {
-        traverse(r, c - 1, board);
-    }
-
-    traverse(r, c + 1, board);
-}
-
 fn solution(board: [][]u8) u32 {
     var result: u32 = 0;
 
     for (0..board.len) |i| {
         for (0..board[i].len) |j| {
             if (board[i][j] == 'X') {
-                result += 1;
-                traverse(i, j, board);
+                const top = i > 0 and board[i - 1][j] == 'X';
+                const left = j > 0 and board[i][j - 1] == 'X';
+                if (!top and !left) result += 1;
             }
         }
     }
