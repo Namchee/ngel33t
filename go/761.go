@@ -22,7 +22,7 @@ func makeLargestSpecial(s string) string {
 		}
 
 		if balance == 0 {
-			temp := "1" + makeLargestSpecial(s[start+1:i]) + "0"
+			temp := "1" + makeLargestSpecial(s[start+1:idx]) + "0"
 			buffer = append(buffer, temp)
 			start = idx + 1
 		}
