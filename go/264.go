@@ -37,19 +37,16 @@ func (h *MaxHeap) Peek() any {
 }
 
 func nthUglyNumber(n int) int {
-	h := &MaxHeap{1} // Start with 1
+	h := &MaxHeap{1}
 	heap.Init(h)
 
-	// Track seen numbers to avoid duplicates
 	seen := map[int]bool{1: true}
 	factors := []int{2, 3, 5}
 
 	val := 1
 	for i := 0; i < n; i++ {
-		// 1. Pop the smallest current ugly number
 		val = heap.Pop(h).(int)
 
-		// 2. Generate next possibilities
 		for _, f := range factors {
 			next := val * f
 			if !seen[next] {
