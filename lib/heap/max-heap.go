@@ -5,14 +5,14 @@ import (
 	"fmt"
 )
 
-type MinHeap []int
+type MaxHeap []int
 
 func (h MinHeap) Len() int {
 	return len(h)
 }
 
 func (h MinHeap) Less(i, j int) bool {
-	return h[i] < h[j]
+	return h[i] > h[j]
 }
 
 func (h MinHeap) Swap(i, j int) {
