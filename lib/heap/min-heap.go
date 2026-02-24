@@ -37,11 +37,10 @@ func (h *MinHeap) Peek() any {
 	return (*h)[0]
 }
 
-func main() {
+func minHeapTest() {
 	h := &MinHeap{2, 1, 5}
 	heap.Init(h)
 	heap.Push(h, 3)
 
 	fmt.Println(h.Peek())
-
 }
