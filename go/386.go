@@ -25,7 +25,7 @@ func generateLexical(curr int, result *[]int, lim int) {
 func lexicalOrder(n int) []int {
 	result := []int{}
 
-	generateLexical(0, result, n)
+	generateLexical(0, &result, n)
 
 	return result
 }
