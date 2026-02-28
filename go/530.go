@@ -27,4 +27,7 @@ func (s *State) traverse(node *TreeNode) {
 
 func getMinimumDifference(root *TreeNode) int {
 	state := &State{prev: -1, best: SENTINEL}
+	state.traverse(root)
+
+	return state.best
 }
