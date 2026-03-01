@@ -17,9 +17,7 @@ func generateLetterCase(idx int, tokens []string, result *[]string) {
 		tokens[idx] = strings.ToUpper(tokens[idx])
 		generateLetterCase(idx+1, tokens, result)
 		tokens[idx] = strings.ToLower(tokens[idx])
-
 		generateLetterCase(idx+1, tokens, result)
-
 	}
 }
 
