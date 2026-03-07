@@ -1,24 +1,24 @@
 package main
 
 func canCompleteCircuit(gas []int, cost []int) int {
+	rem := 0
+	tank := 0
+
+	start := 0
+
 	for i := 0; i < len(gas); i++ {
-		start := i
-		tank := 0
+		rem += gas[i] - cost[i]
+		tank += gas[i] - cost[i]
 
-		for true {
-			tank += gas[start]
-			if tank < cost[start] {
-				break
-			}
-
-			tank -= cost[start]
-			start = (start + 1) % len(gas)
-
-			if start == i {
-				return i
-			}
+		if tank < 0 {
+			tank = 0
+			start = i + 1
 		}
 	}
 
-	return -1
+	if rem < 0 {
+		return -1
+	}
+
+	return start
 }
