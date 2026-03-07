@@ -1,26 +1,26 @@
 const std = @import("std");
 
 fn solution(gas: []i32, cost: []i32) i32 {
-    for (0..gas.len) |start| {
-        var idx = start;
-        var tank: i32 = 0;
+    var rem: i32 = 0;
+    var tank: i32 = 0;
 
-        while (true) {
-            tank += gas[idx];
-            if (tank < cost[idx]) {
-                break;
-            }
+    var start: i32 = 0;
 
-            tank -= cost[idx];
+    for (0..gas.len) |idx| {
+        rem += gas[idx] - cost[idx];
+        tank += gas[idx] - cost[idx];
 
-            idx = (idx + 1) % gas.len;
-            if (idx == start) {
-                return @intCast(start);
-            }
+        if (tank < 0) {
+            tank = 0;
+            start = @as(i32, @intCast(idx)) + 1;
         }
     }
 
-    return -1;
+    if (rem < 0) {
+        return -1;
+    }
+
+    return start;
 }
 
 const expect = std.testing.expect;
