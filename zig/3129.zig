@@ -28,7 +28,7 @@ fn solution(allocator: std.mem.Allocator, zero: usize, one: usize, lim: usize) !
         table0[i][0] = 1;
     }
 
-    for (1..@min(one, lim)) |j| {
+    for (1..@min(one, lim) + 1) |j| {
         table1[0][j] = 1;
     }
 
@@ -40,7 +40,7 @@ fn solution(allocator: std.mem.Allocator, zero: usize, one: usize, lim: usize) !
                 val0 -= table1[i - lim - 1][j];
             }
 
-            table0[i][j] = @mod(val0, MOD);
+            table0[i][j] = (val0 % MOD + MOD) % MOD;
 
             var val1 = @mod(table0[i][j - 1] + table1[i][j - 1], MOD);
 
@@ -48,7 +48,7 @@ fn solution(allocator: std.mem.Allocator, zero: usize, one: usize, lim: usize) !
                 val1 -= table0[i][j - lim - 1];
             }
 
-            table1[i][j] = @mod(val1, MOD);
+            table1[i][j] = (val1 % MOD + MOD) % MOD;
         }
     }
 
@@ -65,6 +65,34 @@ test "test case #1" {
     const lim = 2;
 
     const expected = 2;
+
+    const sol = try solution(allocator, zero, one, lim);
+
+    try expect(expected, sol);
+}
+
+test "test case #2" {
+    const allocator = std.testing.allocator;
+
+    const zero = 1;
+    const one = 2;
+    const lim = 1;
+
+    const expected = 1;
+
+    const sol = try solution(allocator, zero, one, lim);
+
+    try expect(expected, sol);
+}
+
+test "test case #3" {
+    const allocator = std.testing.allocator;
+
+    const zero = 3;
+    const one = 3;
+    const lim = 2;
+
+    const expected = 14;
 
     const sol = try solution(allocator, zero, one, lim);
 
