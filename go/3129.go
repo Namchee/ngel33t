@@ -11,11 +11,11 @@ func numberOfStableArrays(zero int, one int, limit int) int {
 		table1[i] = make([]int, one+1)
 	}
 
-	for i := 0; i <= min(zero, limit); i++ {
+	for i := 1; i <= min(zero, limit); i++ {
 		table0[i][0] = 1
 	}
 
-	for j := 0; j <= min(one, limit); j++ {
+	for j := 1; j <= min(one, limit); j++ {
 		table1[0][j] = 1
 	}
 
