@@ -2,34 +2,28 @@ const std = @import("std");
 
 const MOD = 1000000007;
 
-const FancyValue = struct {
-    val: i32,
-    idx: usize,
-};
-
-const FancyOperation = struct {
-    mult: bool,
-    val: i32,
-};
-
 const Fancy = struct {
-    sequence: std.ArrayList(FancyValue),
-    operations: std.ArrayList(FancyOperation),
+    sequence: std.ArrayList(i32),
+    mult: i32,
+    inc: i32,
 
     pub fn construct() Fancy {
-        return Fancy{ .sequence = .empty, .operations = .empty };
+        return Fancy{ .sequence = .empty, .mult = 1, .inc = 0 };
     }
 
     pub fn append(self: *Fancy, allocator: std.mem.Allocator, val: i32) void {
-        try self.sequence.append(allocator, FancyValue{ .val = val, .idx = self.operations.items.len });
+        const temp = (val - self.inc + MOD) % MOD;
+
+        try self.sequence.append(allocator, @mod(temp * std.math.pow(i32, self.mult, MOD - 2)), MOD);
     }
 
-    pub fn addAll(self: *Fancy, allocator: std.mem.Allocator, inc: i32) void {
-        try self.operations.append(allocator, FancyOperation{ .mult = false, .val = inc });
+    pub fn addAll(self: *Fancy, inc: i32) void {
+        self.inc = @mod(self.inc + inc, MOD);
     }
 
-    pub fn multAll(self: *Fancy, allocator: std.mem.Allocator, m: i32) void {
-        try self.operations.append(allocator, FancyOperation{ .mult = false, .val = m });
+    pub fn multAll(self: *Fancy, m: i32) void {
+        self.mult = @mod(self.mult * m, MOD);
+        self.inc = @mod(self.inc * m, MOD);
     }
 
     pub fn getIndex(self: *Fancy, idx: usize) i32 {
@@ -37,16 +31,13 @@ const Fancy = struct {
             return -1;
         }
 
-        for (self.sequence.items[idx].idx..self.operations.items.len) |i| {
-            if (self.operations.items[i].mult) {
-                self.sequence.items[idx].val = @mod(self.sequence.items[idx].val * self.operations.items[i].val, MOD);
-            } else {
-                self.sequence.items[idx].val = @mod(self.sequence.items[idx].val + self.operations.items[i].val, MOD);
-            }
-        }
+        var res = @mod(self.sequence[idx] * self.mult, MOD);
+        res = @mod(res + self.inc, MOD);
 
-        self.sequence.items[idx].idx = self.operations.items.len;
+        return res;
+    }
 
-        return self.sequence.items[idx].val;
+    pub fn deinit(self: *Fancy, allocator: std.mem.Allocator) void {
+        self.sequence.deinit(allocator);
     }
 };
