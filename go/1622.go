@@ -2,35 +2,47 @@ package main
 
 const FancyMod = 1000000007
 
-type FancyValue struct {
-	val int
-	idx int // operation index
-}
+func pow(base, exp int) int {
+	res := 1
+	base %= FancyMod
+	for exp > 0 {
+		if exp%2 == 1 {
+			res = (res * base) % FancyMod
+		}
 
-type FancyOperation struct {
-	op  byte
-	val int
+		base = (base * base) % FancyMod
+		exp /= 2
+	}
+	return res
 }
 
 type Fancy struct {
-	sequence   []FancyValue
-	operations []FancyOperation
+	sequence []int
+	mult     int
+	inc      int
 }
 
 func Constructor() Fancy {
-	return Fancy{}
+	return Fancy{
+		sequence: []int{},
+		mult:     1,
+		inc:      0,
+	}
 }
 
 func (this *Fancy) Append(val int) {
-	this.sequence = append(this.sequence, FancyValue{val: val, idx: len(this.operations)})
+	// (val - add) * inv(mul)
+	temp := (val - this.inc + FancyMod) % FancyMod
+	this.sequence = append(this.sequence, (temp*pow(this.mult, FancyMod-2))%FancyMod)
 }
 
 func (this *Fancy) AddAll(inc int) {
-	this.operations = append(this.operations, FancyOperation{op: '+', val: inc})
+	this.inc = (this.inc + inc) % FancyMod
 }
 
 func (this *Fancy) MultAll(m int) {
-	this.operations = append(this.operations, FancyOperation{op: '*', val: m})
+	this.mult = (this.mult * m) % FancyMod
+	this.inc = (this.inc * m) % FancyMod // need to distribute the multiplier
 }
 
 func (this *Fancy) GetIndex(idx int) int {
@@ -38,15 +50,8 @@ func (this *Fancy) GetIndex(idx int) int {
 		return -1
 	}
 
-	for i := this.sequence[idx].idx; i < len(this.operations); i++ {
-		if this.operations[i].op == '*' {
-			this.sequence[idx].val = (this.sequence[idx].val * this.operations[i].val) % FancyMod
-		} else {
-			this.sequence[idx].val = (this.sequence[idx].val + this.operations[i].val) % FancyMod
-		}
-	}
+	res := (this.sequence[idx] * this.mult) % FancyMod
+	res = (res + this.inc) % FancyMod
 
-	this.sequence[idx].idx = len(this.operations)
-
-	return this.sequence[idx].val
+	return res
 }
