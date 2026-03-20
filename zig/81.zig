@@ -31,3 +31,13 @@ test "test case #2" {
 
     try expect(expected, actual);
 }
+
+test "test case #3" {
+    const nums = [_]i32{ 2, 5, 6, 0, 0, 1, 2 };
+    const target = 2;
+
+    const expected = true;
+    const actual = solution(&nums, target);
+
+    try expect(expected, actual);
+}
