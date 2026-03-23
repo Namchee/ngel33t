@@ -41,5 +41,5 @@ func maxProductPath(grid [][]int) int {
 		}
 	}
 
-	return max(result, matrix[m-1][n-1][0]%ProductMod, matrix[m-1][n-1][1]%ProductMod)
+	return max(result, matrix[m-1][n-1][0]%ProductMod)
 }
