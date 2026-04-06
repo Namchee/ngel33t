@@ -1,10 +1,11 @@
 SELECT
-    a.user_id,
-    COUNT(a.follower_id) AS followers_count
+    user_id,
+    COUNT(follower_id) AS followers_count
 FROM
-    Followers a INNER JOIN Followers b
-    ON a.user_id != b.follower_id AND a.user_id = b.user_id AND a.follower_id = b.follower_id
+    Followers
+WHERE
+    user_id != follower_id  -- This removes self-follows immediately
 GROUP BY
-    a.user_id
+    user_id
 ORDER BY
-    a.user_id
+    user_id;
