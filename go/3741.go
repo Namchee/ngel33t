@@ -23,7 +23,7 @@ func mini(a, b, c int) int {
 	return min
 }
 
-func minimumDistance(nums []int) int {
+func minimumDistance2(nums []int) int {
 	mp := map[int][]int{}
 
 	best := -1
