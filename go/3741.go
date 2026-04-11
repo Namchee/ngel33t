@@ -1,25 +1,51 @@
 package main
 
-func minimumDistance2(nums []int) int {
-	mp := map[int][]int{}
-
-	for idx, num := range nums {
-		mp[num] = append(mp[num], idx)
+func maxi(a, b, c int) int {
+	max := a
+	if b > max {
+		max = b
 	}
+	if c > max {
+		max = c
+	}
+	return max
+}
+
+func mini(a, b, c int) int {
+	min := a
+	if b < min {
+		min = b
+	}
+	if c < min {
+		min = c
+	}
+
+	return min
+}
+
+func minimumDistance(nums []int) int {
+	mp := map[int][]int{}
 
 	best := -1
 
-	for _, v := range mp {
-		for i := 0; i < len(v)-2; i++ {
-			a := v[i]
-			b := v[i+1]
-			c := v[i+2]
+	for i := 0; i < len(nums); i++ {
+		val, ok := mp[nums[i]]
+		if !ok {
+			mp[nums[i]] = []int{-1, i}
+		} else {
+			if val[0] != -1 {
+				a := val[0]
+				b := val[1]
+				c := i
 
-			dist := b - a + c - a + c - b
-
-			if best == -1 || dist < best {
-				best = dist
+				diff := 2 * (maxi(a, b, c) - mini(a, b, c))
+				if best == -1 || diff < best {
+					best = diff
+				}
 			}
+
+			mp[nums[i]][0] = mp[nums[i]][1]
+			mp[nums[i]][1] = i
 		}
 	}
 
