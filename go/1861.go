@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func rotateTheBox(boxGrid [][]byte) [][]byte {
 	m := len(boxGrid)
 	n := len(boxGrid[0])
@@ -17,23 +15,15 @@ func rotateTheBox(boxGrid [][]byte) [][]byte {
 		}
 	}
 
-	for i := 0; i < n; i++ {
-		for j := 0; j < m; j++ {
-			fmt.Printf("%c ", mat[i][j])
-		}
-		fmt.Print("\n")
-	}
-
 	for j := 0; j < m; j++ {
+		lowest := n - 1
 		for i := n - 1; i >= 0; i-- {
-			if mat[i][j] == '#' {
-				k := i
-				for k+1 < n && mat[k+1][j] != '*' && mat[k+1][j] != '#' {
-					k++
-				}
-
+			if mat[i][j] == '*' {
+				lowest = i - 1
+			} else if mat[i][j] == '#' {
 				mat[i][j] = '.'
-				mat[k][j] = '#'
+				mat[lowest][j] = '#'
+				lowest--
 			}
 		}
 	}
