@@ -1,27 +1,30 @@
 package main
 
-var cachedSPF []int
+var cached []int
 
 func spf21() []int {
-	if cachedSPF != nil {
-		return cachedSPF
-	}
-	s := make([]int, 1000001)
-	for i := range s {
-		s[i] = i
+	if cached != nil {
+		return cached
 	}
 
-	for i := 2; i*i < 1000001; i++ {
-		if s[i] == i {
+	spf := make([]int, 1000001)
+
+	for i := range spf {
+		spf[i] = i
+	}
+
+	for i := 2; i*1 < 1000001; i++ {
+		if spf[i] == i {
 			for j := i * i; j < 1000001; j += i {
-				if s[j] == j {
-					s[j] = i
+				if spf[j] == j {
+					spf[j] = i
 				}
 			}
 		}
 	}
-	cachedSPF = s
-	return s
+
+	cached = spf
+	return spf
 }
 
 func beeg(a, b int) int {
@@ -41,52 +44,33 @@ func minJumps(nums []int) int {
 		maxi = beeg(maxi, num)
 	}
 
-	primeSeen := make([]bool, maxi+1)
-	for _, x := range nums {
-		if x >= 2 && x <= maxi && spf[x] == x {
-			primeSeen[x] = true
+	goodPrimes := make([]bool, maxi+1)
+	for _, num := range nums {
+		if num >= 2 && spf[num] == num {
+			goodPrimes[num] = true
 		}
 	}
 
-	counts := make([]int, maxi+1)
-	for _, x := range nums {
-		temp := x
-		if temp <= 1 {
+	teleport := map[int][]int{}
+	for i := 0; i < n; i++ {
+		x := nums[i]
+		if x == 1 {
 			continue
 		}
-		for temp > 1 {
-			p := spf[temp]
-			if p <= maxi && primeSeen[p] {
-				counts[p]++
-			}
-			for temp%p == 0 {
-				temp /= p
-			}
-		}
-	}
 
-	offsets := make([]int, maxi+2)
-	for i := 0; i <= maxi; i++ {
-		offsets[i+1] = offsets[i] + counts[i]
-	}
+		for x > 1 {
+			p := spf[x]
+			if p <= maxi && goodPrimes[p] {
+				_, ok := teleport[p]
+				if !ok {
+					teleport[p] = []int{}
+				}
 
-	flattened := make([]int, offsets[maxi+1])
-	cp := make([]int, maxi+1)
-	copy(cp, offsets)
-
-	for i, x := range nums {
-		temp := x
-		if temp <= 1 {
-			continue
-		}
-		for temp > 1 {
-			p := spf[temp]
-			if p <= maxi && primeSeen[p] {
-				flattened[cp[p]] = i
-				cp[p]++
+				teleport[p] = append(teleport[p], i)
 			}
-			for temp%p == 0 {
-				temp /= p
+
+			for x%p == 0 {
+				x /= p
 			}
 		}
 	}
@@ -98,40 +82,43 @@ func minJumps(nums []int) int {
 
 	used := make([]bool, maxi+1)
 
-	q := make([]int, 0, n)
+	q := []int{}
 	q = append(q, 0)
 	dist[0] = 0
-	head := 0
 
-	for head < len(q) {
-		curr := q[head]
-		head++
+	for len(q) > 0 {
+		curr := q[0]
+		q = q[1:]
 
 		if curr == n-1 {
 			return dist[curr]
 		}
 
-		// left
+		// look back
 		if curr-1 >= 0 && dist[curr-1] == -1 {
 			dist[curr-1] = dist[curr] + 1
 			q = append(q, curr-1)
 		}
 
-		// right
+		// look front
 		if curr+1 < n && dist[curr+1] == -1 {
 			dist[curr+1] = dist[curr] + 1
 			q = append(q, curr+1)
 		}
 
 		x := nums[curr]
-		if x >= 2 && x <= maxi && spf[x] == x && !used[x] {
+
+		// prime
+		if x <= maxi && x >= 2 && spf[x] == x && !used[x] {
 			used[x] = true
-			start, end := offsets[x], offsets[x+1]
-			for i := start; i < end; i++ {
-				target := flattened[i]
-				if dist[target] == -1 {
-					dist[target] = dist[curr] + 1
-					q = append(q, target)
+			next, ok := teleport[x]
+
+			if ok {
+				for _, n := range next {
+					if dist[n] == -1 {
+						dist[n] = dist[curr] + 1
+						q = append(q, n)
+					}
 				}
 			}
 		}
