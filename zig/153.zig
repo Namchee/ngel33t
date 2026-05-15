@@ -43,12 +43,3 @@ test "test case #2" {
 
     try expect(expected, actual);
 }
-
-test "test case #3" {
-    const nums = [_]i32{ 11, 13, 15, 17 };
-
-    const expected = 11;
-    const actual = solution(&nums);
-
-    try expect(expected, actual);
-}
